@@ -20,7 +20,7 @@
     "ruleNextPage": "PAGE",
     "ruleTitle": "@CSS:.front-video-title@text",
     "rulePubDate": "@CSS:.front-video-meta span:last-child@text",
-    "ruleDescription": "@CSS:.front-video-overlay@text",
+    "ruleDescription": "",
     "ruleImage": "@CSS:img@data-front-lazy-src",
     "ruleLink": "@CSS:.front-video-title@href",
     "ruleContent": "@js:var h=String(result);var m=h.match(/source[^>]*src=\"([^\"]+)\"[^>]*type=\"video\\/mp4\"/);if(!m){m=h.match(/source[^>]*type=\"video\\/mp4\"[^>]*src=\"([^\"]+)\"/);}'<video controls autoplay width=\"100%\" src=\"'+(m?m[1]:'')+'\"></video>'",
