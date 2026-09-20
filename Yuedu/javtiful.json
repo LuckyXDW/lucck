@@ -23,7 +23,7 @@
     "ruleDescription": "@CSS:.front-video-overlay@text",
     "ruleImage": "@CSS:img@data-front-lazy-src",
     "ruleLink": "@CSS:.front-video-title@href",
-    "ruleContent": "@CSS:.front-player-shell@html",
+    "ruleContent": "@CSS:.front-player-shell source[type=\"video/mp4\"]@src",
     "contentWhitelist": "",
     "contentBlacklist": "",
     "shouldOverrideUrlLoading": "",
