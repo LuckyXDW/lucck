@@ -14,7 +14,7 @@
     "coverDecodeJs": "",
     "sortUrl": "最新::https://javtiful.com/zh/trending?page={{page}}\n有码::https://javtiful.com/zh/censored?page={{page}}\n无码::https://javtiful.com/zh/uncensored?page={{page}}\n薄码::https://javtiful.com/zh/reducing-mosaic?page={{page}}",
     "singleUrl": false,
-    "articleStyle": 2,
+    "articleStyle": 3,
     "type": 2,
     "ruleArticles": "@CSS:article.front-video-card:not(.front-partner-card)",
     "ruleNextPage": "PAGE",
