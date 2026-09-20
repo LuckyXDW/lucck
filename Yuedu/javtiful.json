@@ -23,7 +23,7 @@
     "ruleDescription": "@CSS:.front-video-overlay@text",
     "ruleImage": "@CSS:img@data-front-lazy-src",
     "ruleLink": "@CSS:.front-video-title@href",
-    "ruleContent": "@CSS:.front-player-shell source[type=\"video/mp4\"]@src",
+    "ruleContent": "@js:var h=String(result);var m=h.match(/source[^>]*src=\"([^\"]+)\"[^>]*type=\"video\\/mp4\"/);if(!m){m=h.match(/source[^>]*type=\"video\\/mp4\"[^>]*src=\"([^\"]+)\"/);}'<video controls autoplay width=\"100%\" src=\"'+(m?m[1]:'')+'\"></video>'",
     "contentWhitelist": "",
     "contentBlacklist": "",
     "shouldOverrideUrlLoading": "",
