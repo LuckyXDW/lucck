@@ -23,7 +23,7 @@
     "ruleDescription": "",
     "ruleImage": "@CSS:.img@style##url\\('([^']+)'##$1##",
     "ruleLink": "@CSS:.title a@href",
-    "ruleContent": "<js>\nvar h = String(result);\nvar m = h.match(/<div class=\"fiction-body\">([\\s\\S]*?)<\\/div>/);\nvar body = m ? m[1] : '';\nvar a = h.match(/<source src=\"(https:\\/\\/upload\\.xchina\\.io\\/mp3\\/[^\"]+)\"/);\nvar audio = a ? a[1] : '';\nvar player = audio ? '<audio controls src=\"' + audio + '\" style=\"width:100%;margin:8px 0;\"></audio>' : '';\n`<div style=\"padding:12px;line-height:1.9;font-size:17px;color:#e8e8e8;background:#161616;\">${player}${body}</div>`\n</js>",
+    "ruleContent": "<js>\nvar h = String(result);\nvar body = '';\nvar m = h.match(/<div class=\"fiction-body\">([\\s\\S]*?)<\\/div>/);\nif (m) body = m[1];\nif (!body) {\n    var ps = h.match(/<p>[^<]{20,}<\\/p>/g);\n    if (ps) body = ps.join('');\n}\nvar a = h.match(/<source src=\"(https:\\/\\/upload\\.xchina\\.io\\/mp3\\/[^\"]+)\"/);\nvar audio = a ? a[1] : '';\nvar player = audio ? '<audio controls src=\"' + audio + '\" style=\"width:100%;margin:8px 0;\"></audio>' : '';\nif (!body && !audio) {\n    var tip = h.indexOf('Just a moment') >= 0\n        ? '正文加载失败: 被 Cloudflare 拦截 (Just a moment)。稍后重试, 或在订阅源设置调大 concurrentRate。'\n        : '正文加载失败: 未找到正文容器。页面标题: ' + (h.match(/<title>([^<]*)<\\/title>/) || ['', '?'])[1];\n    body = '<p style=\"color:#f88;padding:16px;\">' + tip + '</p>';\n}\n`<div style=\"padding:12px;line-height:1.9;font-size:17px;color:#e8e8e8;background:#161616;\">${player}${body}</div>`\n</js>",
     "contentWhitelist": "",
     "contentBlacklist": "",
     "shouldOverrideUrlLoading": "",
@@ -43,4 +43,4 @@
     "searchUrl": "",
     "variableComment": "",
     "jsLib": null
-}  
+}
