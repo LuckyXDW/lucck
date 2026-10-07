@@ -1,84 +1,28 @@
-# 生成 supjav.json（用 json.dump，避免手写转义）
-import json, os, sys
-
-UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-      "(KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36")
-
-# 正文规则：复刻站点自身行为（base.js 的 JumpChain），把第一个播放服务器的 data-link
-# 拼成 lk1.supremejav.com 中转地址，作为 iframe 交给 WebView 播放。
-CONTENT_JS = (
-    "(function(){"
-    "var s=String(result);"
-    "var m=s.match(/class=\"btn-server[^\"]*\"\\s+data-link=\"([0-9a-fA-F]+)\"/);"
-    "if(!m){m=s.match(/data-link=\"([0-9a-fA-F]+)\"/);}"
-    "if(!m){return '<p style=\"color:#ccc;padding:16px\">未找到播放服务器</p>';}"
-    "var u='https://lk1.supremejav.com/supjav.php?l='+m[1]+'&bg=undefined';"
-    "return '<!DOCTYPE html><html><head><meta charset=\"utf-8\">'"
-    "+'<meta name=\"viewport\" content=\"width=device-width,initial-scale=1.0\">'"
-    "+'<style>html,body{margin:0;padding:0;height:100%;background:#000;overflow:hidden}"
-    "iframe{width:100%;height:100vh;border:0;display:block}</style></head>'"
-    "+'<body><iframe src=\"'+u+'\" allowfullscreen frameborder=\"0\" scrolling=\"no\""
-    " allow=\"autoplay; fullscreen\"></iframe></body></html>';"
-    "})()"
-)
-
-SORTS = [
-    ("热门",     "https://supjav.com/popular/page/{{page}}"),
-    ("有码",     "https://supjav.com/category/censored-jav/page/{{page}}"),
-    ("无码",     "https://supjav.com/category/uncensored-jav/page/{{page}}"),
-    ("素人",     "https://supjav.com/category/amateur/page/{{page}}"),
-    ("中文字幕", "https://supjav.com/category/chinese-subtitles/page/{{page}}"),
-    ("英文字幕", "https://supjav.com/category/english-subtitles/page/{{page}}"),
-    ("薄码",     "https://supjav.com/category/reducing-mosaic/page/{{page}}"),
-]
-
-src = {
-    "sourceUrl": "https://supjav.com/",
-    "sourceName": "SupJav",
-    "sourceIcon": "https://supjav.com/favicon.ico",
-    "sourceGroup": "视频",
-    "sourceComment": ("站点有 Cloudflare Managed Challenge，列表/正文若被挡可在 URL 后加 "
-                      ",{\"webView\":true} 走 WebView 取页面；播放复用站点自身 "
-                      "lk1.supremejav.com 中转，需能访问该域名。"
-                      "redirectPolicy 必须 ALLOW_ALL：播放器是跨域 iframe，"
-                      "ASK_CROSS_ORIGIN 会被 handleRedirect 拦下并顶层跳走"),
-    "enabled": True,
-    "enabledCookieJar": True,
-    "concurrentRate": "800",
-    "header": json.dumps({"User-Agent": UA, "Referer": "https://supjav.com/"},
-                         ensure_ascii=False, separators=(",", ":")),
-    "sortUrl": "\n".join("%s::%s" % (n, u) for n, u in SORTS),
-    "singleUrl": False,
-    "articleStyle": 3,
-    "ruleArticles": "@CSS:div.post",
-    "ruleNextPage": "PAGE",
-    "ruleTitle": "@CSS:h3 a@text",
-    "rulePubDate": "@CSS:.meta@text##(\\d{4}/\\d{2}/\\d{2})##$1##",
-    "ruleDescription": "",
-    "ruleImage": "@CSS:img.thumb@data-original",
-    "ruleLink": "@CSS:h3 a@href",
-    "ruleContent": "@js:" + CONTENT_JS,
-    "style": "",
-    "enableJs": True,
-    "loadWithBaseUrl": True,
-    "type": 0,
-    "searchUrl": "https://supjav.com/?s={{key}}",
-    # 播放器是跨域 iframe：ASK_CROSS_ORIGIN 会在 handleRedirect 里弹窗并 view.loadUrl 顶层跳走，
-    # 必须 ALLOW_ALL（handleRedirect 直接 return false，不拦截）
-    "redirectPolicy": "ALLOW_ALL",
+{
+  "sourceUrl": "https://supjav.com/",
+  "sourceName": "SupJav",
+  "sourceIcon": "https://supjav.com/favicon.ico",
+  "sourceGroup": "视频",
+  "sourceComment": "站点有 Cloudflare Managed Challenge，列表/正文若被挡可在 URL 后加 ,{\"webView\":true} 走 WebView 取页面；播放复用站点自身 lk1.supremejav.com 中转，需能访问该域名。redirectPolicy 必须 ALLOW_ALL：播放器是跨域 iframe，ASK_CROSS_ORIGIN 会被 handleRedirect 拦下并顶层跳走",
+  "enabled": true,
+  "enabledCookieJar": true,
+  "concurrentRate": "800",
+  "header": "{\"User-Agent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36\",\"Referer\":\"https://supjav.com/\"}",
+  "sortUrl": "热门::https://supjav.com/popular/page/{{page}}\n有码::https://supjav.com/category/censored-jav/page/{{page}}\n无码::https://supjav.com/category/uncensored-jav/page/{{page}}\n素人::https://supjav.com/category/amateur/page/{{page}}\n中文字幕::https://supjav.com/category/chinese-subtitles/page/{{page}}\n英文字幕::https://supjav.com/category/english-subtitles/page/{{page}}\n薄码::https://supjav.com/category/reducing-mosaic/page/{{page}}",
+  "singleUrl": false,
+  "articleStyle": 3,
+  "ruleArticles": "@CSS:div.post",
+  "ruleNextPage": "PAGE",
+  "ruleTitle": "@CSS:h3 a@text",
+  "rulePubDate": "@CSS:.meta@text##(\\d{4}/\\d{2}/\\d{2})##$1##",
+  "ruleDescription": "",
+  "ruleImage": "@CSS:img.thumb@data-original",
+  "ruleLink": "@CSS:h3 a@href",
+  "ruleContent": "@js:(function(){var s=String(result);var m=s.match(/class=\"btn-server[^\"]*\"\\s+data-link=\"([0-9a-fA-F]+)\"/);if(!m){m=s.match(/data-link=\"([0-9a-fA-F]+)\"/);}if(!m){return '<p style=\"color:#ccc;padding:16px\">未找到播放服务器</p>';}var u='https://lk1.supremejav.com/supjav.php?l='+m[1]+'&bg=undefined';return '<!DOCTYPE html><html><head><meta charset=\"utf-8\">'+'<meta name=\"viewport\" content=\"width=device-width,initial-scale=1.0\">'+'<style>html,body{margin:0;padding:0;height:100%;background:#000;overflow:hidden}iframe{width:100%;height:100vh;border:0;display:block}</style></head>'+'<body><iframe src=\"'+u+'\" allowfullscreen frameborder=\"0\" scrolling=\"no\" allow=\"autoplay; fullscreen\"></iframe></body></html>';})()",
+  "style": "",
+  "enableJs": true,
+  "loadWithBaseUrl": true,
+  "type": 0,
+  "searchUrl": "https://supjav.com/?s={{key}}",
+  "redirectPolicy": "ALLOW_ALL"
 }
-
-out = os.path.join(os.path.dirname(os.path.abspath(__file__)), "supjav.json")
-with open(out, "w", encoding="utf-8") as f:
-    json.dump(src, f, ensure_ascii=False, indent=2)
-
-# 回读校验
-with open(out, encoding="utf-8") as f:
-    d = json.load(f)
-assert d["ruleContent"] and not d["ruleDescription"], "规则校验失败"
-assert d["ruleNextPage"].upper() == "PAGE"
-assert d["redirectPolicy"] == "ALLOW_ALL", "跨域 iframe 播放要求 redirectPolicy=ALLOW_ALL"
-assert "{{page}}" in d["sortUrl"] and "{{key}}" in d["searchUrl"]
-print("OK -> " + out)
-print("字段数: %d, 分类数: %d, 文件大小: %d 字节" % (
-    len(d), len(d["sortUrl"].split("\n")), os.path.getsize(out)))
